@@ -2,7 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
 var Category = require('./Category');
 // CREATES A NEW CATEGORY
 router.post('/', (req, res) => {
@@ -33,9 +33,8 @@ router.delete('/:id', (req, res) => {
     Category.findById(req.params.id, (err, category) => { //findByIdAndRemove not fires post middleware
         if (err) return res.status(500).send({"message":"There was a problem deleting the category."});
         if(!category) return res.status(404).send({"message":"No category found."});
-        let name = category.name;
         category.remove();
-        res.status(200).send({"message":`Category ${name} was deleted.`});
+        res.status(204).send();
     });
 });
 

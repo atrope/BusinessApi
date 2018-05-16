@@ -2,7 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
 var Company = require('./Company');
 var Category = require('../category/Category');
 // CREATES A NEW COMPANY
@@ -11,8 +11,8 @@ router.post('/', (req, res) => {
   Category.findById(req.body.categoryId, (err, cat) => {
     if (err) return res.status(500).send({"message":"There was a problem finding the category."});
       if (!cat) return res.status(404).send({"message":"No category found."});
-      if (req.body.name && cat._id && req.body.street && req.body.city && req.body.state && req.body.zip){
-      let addr = {street: req.body.street , city: req.body.city , state: req.body.state , zip:req.body.zip};
+      if (req.body.name && cat._id && req.body.address.street && req.body.address.city && req.body.address.state && req.body.address.zip){
+      let addr = {street: req.body.address.street , city: req.body.address.city , state: req.body.address.state , zip:req.body.address.zip};
       Company.create({name : req.body.name,category: cat._id,address: addr},(err, company) => {
               if (err) return res.status(500).send({"message":"There was a problem adding the information to the database."});
               res.status(200).send(company);
@@ -49,7 +49,7 @@ router.delete('/:id', (req, res) => {
     Company.findByIdAndRemove(req.params.id, (err, company) => {
         if (err) return res.status(500).send({"message":"There was a problem deleting the company."});
         if (!company) return res.status(404).send({"message":"No company found."});
-        res.status(200).send({"message":`Company ${company.name} was deleted.`});
+        res.status(204).send();
     });
 });
 
