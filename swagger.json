@@ -306,7 +306,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of company to delete",
+            "description": "ID of category to search",
             "required": true,
             "type": "integer"
           }
