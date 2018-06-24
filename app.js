@@ -1,5 +1,6 @@
 // app.js
 var express = require('express');
+var cors = require('cors');
 var app = express();
 var db = require('./db');
 var CategoryController = require('./category/CategoryController');
@@ -8,7 +9,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
 
-
+app.use(cors()); 
 app.use('/category', CategoryController);
 app.use('/company', CompanyController);
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
